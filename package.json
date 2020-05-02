@@ -7,7 +7,7 @@
     "mocha": "--require scripts/mocha-bootload"
   },
   "scripts": {
-    "prepublish": "npm run check && npm run build",
+    "prepublish": "npm run snyk-protect && npm run check && npm run build",
     "check": "npm run lint && npm run test:unit",
     "lint": "eslint src",
     "build": "rm -rf lib/* && babel src --ignore test --out-dir lib",
@@ -18,7 +18,8 @@
     "test:docker": "DIALECT=${DIALECT:=postgres} docker-compose run dev /bin/sh -c \"npm run test:integration\"",
     "test:integration": "mocha $npm_package_options_mocha test/integration/*.test.js test/integration/**/*.test.js",
     "psql": "docker run -it --link graphqlsequelize_postgres_1:postgres --rm postgres:9.4 sh -c 'PGPASSWORD=graphql_sequelize_test exec psql -h \"$POSTGRES_PORT_5432_TCP_ADDR\" -p \"$POSTGRES_PORT_5432_TCP_PORT\" -U graphql_sequelize_test'",
-    "cover": "babel-node node_modules/.bin/isparta cover _mocha -- $npm_package_options_mocha test/**/**/*.test.js test/**/*.test.js"
+    "cover": "babel-node node_modules/.bin/isparta cover _mocha -- $npm_package_options_mocha test/**/**/*.test.js test/**/*.test.js",
+    "snyk-protect": "snyk protect"
   },
   "repository": {
     "type": "git",
@@ -42,7 +43,8 @@
   "homepage": "https://github.com/mickhansen/graphql-sequelize",
   "dependencies": {
     "dataloader-sequelize": "https://github.com/Wsiegenthaler/dataloader-sequelize.git",
-    "lodash": "^4.0.0"
+    "lodash": "^4.0.0",
+    "snyk": "^1.316.2"
   },
   "peerDependencies": {
     "graphql-relay": "^0.4.2",
@@ -74,5 +76,6 @@
     "sinon-as-promised": "^4.0.0",
     "sinon-chai": "^2.8.0",
     "sqlite3": "^3.0.9"
-  }
+  },
+  "snyk": true
 }
